@@ -1,0 +1,69 @@
+-- Salary column---
+SELECT left([Salary Estimate], 11) 
+  FROM [Projects].[dbo].['Data science cleaning$']
+
+  Alter table [Projects].[dbo].['Data science cleaning$']
+  add Salary nvarchar(255)
+
+  update [Projects].[dbo].['Data science cleaning$']
+  set Salary = left([Salary Estimate], 11)
+
+
+--company name ---
+
+  SELECT  REPLACE([Company Name], RIGHT([Company Name], 4), '')
+ FROM [Projects].[dbo].['Data science cleaning$']
+
+update  [Projects].[dbo].['Data science cleaning$']
+ set [Company Name] = REPLACE([Company Name], RIGHT([Company Name], 4), '')
+  
+  select *
+  from [Projects].[dbo].['Data science cleaning$']
+
+
+  --revenue --
+ select REPLACE(Revenue, RIGHT(Revenue, 5), '')
+ from [Projects].[dbo].['Data science cleaning$']
+ where Revenue <> 'Unknown'
+
+ update 
+ [Projects].[dbo].['Data science cleaning$'] 
+ set Revenue = 'Unknown'
+ where Revenue = 'Un'
+
+ update [Projects].[dbo].['Data science cleaning$']
+ set Revenue = 'Unknown'
+ where Revenue = 'Unknown / Non-Applicable' or Revenue is null
+
+ --location --
+
+ SELECT  Location
+ from [Projects].[dbo].['Data science cleaning$']
+
+ update [Projects].[dbo].['Data science cleaning$']
+ set Location =  REPLACE(Location, RIGHT(Location, 4), '')
+
+ --Size
+
+ select REPLACE(Size, RIGHT(size, 9), '')
+ from [Projects].[dbo].['Data science cleaning$'] 
+
+ update [Projects].[dbo].['Data science cleaning$'] 
+ set Size = REPLACE(Size, RIGHT(size, 9), '')
+
+
+ --Job description 
+ SELECT value AS keyword,
+        Count(*) as Frequency
+FROM [Projects].[dbo].['Data science cleaning$'] 
+CROSS APPLY STRING_SPLIT([Job Description], ' ')
+group by value
+order By Frequency DESC
+
+aLTER TABLE [Projects].[dbo].['Data science cleaning$'] 
+ADD Frequency INT 
+
+UPDATE [Projects].[dbo].['Data science cleaning$'] 
+SET  = (SELECT value AS keyword
+FROM [Projects].[dbo].['Data science cleaning$'] 
+CROSS APPLY STRING_SPLIT([Job Description], ' ')
